@@ -1,13 +1,16 @@
-package com.example.cnclibrary;
+package com.example.cnclibrary;//package com.example.cnclibrary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.cnclibrary.ui.scanner.ScannerActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.core.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,4 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void clk(android.view.View view) {
+        Intent intent = new Intent(this, ScannerActivity.class);
+        startActivity(intent);
+    }
 }

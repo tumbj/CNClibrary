@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "493043207592",
+    "firebase_url": "https://cnc-library.firebaseio.com",
+    "project_id": "cnc-library",
+    "storage_bucket": "cnc-library.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493043207592:android:2b3112cdef693cca22219d",
+        "android_client_info": {
+          "package_name": "com.example.cnclibrary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493043207592-5c8iogke9elkphhhv10g7gjsr62n587o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cnclibrary",
+            "certificate_hash": "51409c9f82162fb704866bec6b64e39ea838ce1a"
+          }
+        },
+        {
+          "client_id": "493043207592-k6v56g73ht1n2kbqv2ahkambeu35f51v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTWDYERpgZQ6Ac-iuHprrI8Kh3j6ePeIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493043207592-k6v56g73ht1n2kbqv2ahkambeu35f51v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

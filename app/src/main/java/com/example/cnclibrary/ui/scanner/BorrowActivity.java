@@ -19,7 +19,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import static android.Manifest.permission.CAMERA;
 
 
-public class ScannerActivity extends Activity implements ZXingScannerView.ResultHandler {
+public class BorrowActivity extends Activity implements ZXingScannerView.ResultHandler {
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
 
@@ -31,7 +31,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(checkPermission()){
-                Toast.makeText(ScannerActivity.this,"Permission is granted",Toast.LENGTH_LONG).show();
+                Toast.makeText(BorrowActivity.this,"Permission is granted",Toast.LENGTH_LONG).show();
             }
             else{
                 requestPermission();
@@ -42,7 +42,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
 
 
     public boolean checkPermission(){
-        return (ContextCompat.checkSelfPermission(ScannerActivity.this, CAMERA)== PackageManager.PERMISSION_GRANTED);
+        return (ContextCompat.checkSelfPermission(BorrowActivity.this, CAMERA)== PackageManager.PERMISSION_GRANTED);
     }
 
     public void requestPermission(){
@@ -79,7 +79,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         }
     }
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(ScannerActivity.this)
+        new AlertDialog.Builder(BorrowActivity.this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)

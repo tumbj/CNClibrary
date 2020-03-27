@@ -1,6 +1,5 @@
 package com.example.cnclibrary.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.cnclibrary.R;
-import com.example.cnclibrary.ui.scanner.ScannerActivity;
 
 public class HomeFragment extends Fragment {
 

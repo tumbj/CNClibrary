@@ -3,6 +3,7 @@ package com.example.cnclibrary;//package com.example.cnclibrary;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.cnclibrary.admin.AddBookActivity;
 import com.example.cnclibrary.ui.scanner.BorrowActivity;
 import com.example.cnclibrary.ui.scanner.ReturnActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void returnClk(android.view.View view) {
         Intent intent = new Intent(this, ReturnActivity.class);
+        startActivity(intent);
+    }
+
+    public void addBookClk(android.view.View view) {
+        Intent intent = new Intent(this, AddBookActivity.class);
         startActivity(intent);
     }
 }

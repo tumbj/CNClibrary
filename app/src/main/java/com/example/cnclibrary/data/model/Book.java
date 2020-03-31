@@ -6,13 +6,15 @@ public class Book {
     private String detail;
     private String category;
     private int count;
+    private String img;
 
-    public Book(String name, String barcode, String detail, String category, int count) {
+    public Book(String name, String barcode, String detail, String category, int count,String img) {
         this.name = name;
         this.barcode = barcode;
         this.detail = detail;
         this.category = category;
         this.count = count;
+        this.img = img;
     }
 
     public String getName() {
@@ -53,5 +55,13 @@ public class Book {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

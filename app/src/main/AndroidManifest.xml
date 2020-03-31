@@ -18,6 +18,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".admin.AddBookActivity"></activity>
         <activity android:name=".ui.scanner.BorrowActivity" />
+        <activity android:name=".ui.scanner.ReturnActivity" />
+        <activity android:name=".ui.scanner.AddActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />

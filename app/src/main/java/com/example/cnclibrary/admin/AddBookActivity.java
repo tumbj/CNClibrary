@@ -62,8 +62,10 @@ public class AddBookActivity extends AppCompatActivity {
 
     public String encodeBase64(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
+        Log.i("base64",Base64.encodeToString(imageBytes, Base64.DEFAULT));
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
     public Bitmap decodeBase64(String encodeImg){
@@ -83,7 +85,7 @@ public class AddBookActivity extends AppCompatActivity {
 
         String imageString = encodeBase64(bitmap);
         String name = String.valueOf(nameEditText.getText());
-        String barcode = (String) barcodeText.getText();
+        final String barcode = (String) barcodeText.getText();
         String detail = String.valueOf(detailEditText.getText());
         String categorySelected = category.getSelectedItem().toString();
         int countBook = Integer.parseInt(String.valueOf(countEditText.getText()));
@@ -93,14 +95,15 @@ public class AddBookActivity extends AppCompatActivity {
 
         // add to db
         db.collection("books")
-                .add(newBook)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    Log.d("add", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
+                .document(barcode)
+                .set(newBook)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                    public void onSuccess(Void avoid) {
+                        Log.d("add", "DocumentSnapshot added with ID: " + barcode);
+                        Intent intent = new Intent(AddBookActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
                 })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override

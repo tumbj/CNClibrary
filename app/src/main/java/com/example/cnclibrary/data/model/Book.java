@@ -16,6 +16,14 @@ public class Book {
         this.count = count;
         this.img = img;
     }
+    public Book(){
+        this.name = "";
+        this.barcode = "";
+        this.detail = "";
+        this.category = "";
+        this.count = 0;
+        this.img = "";
+    }
 
     public String getName() {
         return name;

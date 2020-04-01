@@ -9,26 +9,39 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.cnclibrary.R;
+import com.example.cnclibrary.data.model.Book;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.Result;
+
+import java.util.Map;
+import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
+import static android.app.PendingIntent.getActivity;
 
 
 public class BorrowActivity extends Activity implements ZXingScannerView.ResultHandler {
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
+    FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
-
+        db = FirebaseFirestore.getInstance();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(checkPermission()){
                 Toast.makeText(BorrowActivity.this,"Permission is granted",Toast.LENGTH_LONG).show();
@@ -101,12 +114,49 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
 
     @Override
     public void handleResult(Result rawResult) {
-        // Do something with the result here
-        Log.v("scanner", rawResult.getText()); // Prints scan results
-        Log.v("scanner", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
+        final Book book = new Book();
 
-        // If you would like to resume scanning, call this method below:
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Log.i("vac","ok was click");
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Log.i("vac","cancel was click");
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.setTitle("You want to borrow this book ?");
+
+        String barcode = rawResult.getText();
+        Log.v("scanner",barcode); // Prints scan results
+        DocumentReference docRef = db.collection("books").document("9786167164045");
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map<String, Object> obj = document.getData();
+                            book.setName((String) obj.get("name"));
+                            dialog.setMessage("The book name "+book.getName());
+                            dialog.show();
+//                            Log.i("vac","from book :"+book.getName());
+//                            Log.d("vac", "DocumentSnapshot data: " + document.getData());
+                        } else {
+                            Log.d("vac", "No such document");
+                        }
+                    } else {
+                        Log.d("vac", "get failed with ", task.getException());
+                    }
+                }
+            });
+
+//        // If you would like to resume scanning, call this method below:
         mScannerView.resumeCameraPreview(this);
+
     }
 
 }

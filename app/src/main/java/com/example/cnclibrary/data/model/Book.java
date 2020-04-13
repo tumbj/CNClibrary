@@ -1,5 +1,7 @@
 package com.example.cnclibrary.data.model;
 
+import java.util.ArrayList;
+
 public class Book {
     private String name;
     private String barcode;
@@ -7,6 +9,8 @@ public class Book {
     private String category;
     private int count;
     private String img;
+    private boolean isFree;
+//    private ArrayList<String> histories;
 
     public Book(String name, String barcode, String detail, String category, int count,String img) {
         this.name = name;
@@ -15,6 +19,8 @@ public class Book {
         this.category = category;
         this.count = count;
         this.img = img;
+        this.isFree = true;
+//        this.histories = new ArrayList<>();
     }
     public Book(){
         this.name = "";
@@ -23,6 +29,9 @@ public class Book {
         this.category = "";
         this.count = 0;
         this.img = "";
+        this.isFree = false;
+//        this.histories = new ArrayList<>();
+
     }
 
     public String getName() {

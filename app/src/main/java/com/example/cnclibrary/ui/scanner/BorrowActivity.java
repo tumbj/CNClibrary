@@ -132,8 +132,6 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
             public void onClick(DialogInterface dialog, int id) {
                 Log.i("vac","ok was click");
                 History history = new History(book.getBarcode());
-                Log.i("tum","history : "+history.getBarcode());
-                Log.i("tum","book "+book.getBarcode());
                 db.collection("bags").document("userid")
                         .update("books", FieldValue.arrayUnion(history)).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -169,18 +167,6 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
         final AlertDialog dialog = builder.create();
         dialog.setTitle("You want to borrow this book ?");
 
-        /// new dialog when book already borrow
-//        AlertDialog.Builder newBuilder = new AlertDialog.Builder(this);
-//        newBuilder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                Log.i("vac","ok was click2");
-//                mScannerView.resumeCameraPreview(BorrowActivity.this);
-//            }
-//
-//        });
-//        final AlertDialog notFreeBookDialog = builder.create();
-//        notFreeBookDialog.setTitle("This book already borrow !!!");
-
         String barcode = rawResult.getText();
         Log.v("scanner",barcode); // Prints scan results
         // get book from DB
@@ -195,7 +181,6 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                             String barcode = String.valueOf(obj.get("barcode"));
                             String bookName = String.valueOf(obj.get("name"));
                             boolean isFree = (boolean) obj.get("isFree");
-                            Log.i("tum","is free val"+isFree);
                             if(isFree){ // check this book have free ?
                                 book.setName(bookName);
                                 book.setBarcode(barcode);
@@ -203,9 +188,8 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                                 dialog.setMessage("The book name: "+book.getName());
                                 dialog.show();
                             }else {
-                                Log.i("tum","book already borrow");
-//                                notFreeBookDialog.setMessage("The book name: "+book.getName());
-//                                notFreeBookDialog.show();
+                                Toast.makeText(BorrowActivity.this,bookName+" has borrowed.",Toast.LENGTH_LONG).show();
+                                mScannerView.resumeCameraPreview(BorrowActivity.this);
                             }
                         } else {
                             Log.d("vac", "No such document");

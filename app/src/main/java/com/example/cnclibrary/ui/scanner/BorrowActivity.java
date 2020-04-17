@@ -18,6 +18,7 @@ import com.example.cnclibrary.MainActivity;
 import com.example.cnclibrary.R;
 import com.example.cnclibrary.admin.AddBookActivity;
 import com.example.cnclibrary.data.model.Book;
+import com.example.cnclibrary.data.model.BookHistory;
 import com.example.cnclibrary.data.model.History;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -131,12 +132,23 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Log.i("vac","ok was click");
-                History history = new History(book.getBarcode());
-                db.collection("bags").document("userid")
-                        .update("books", FieldValue.arrayUnion(history)).addOnFailureListener(new OnFailureListener() {
+
+//                History history = new History(book.getBarcode());
+//                // add history to bag of user
+//                db.collection("bags").document("userid")
+//                        .update("books", FieldValue.arrayUnion(history)).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+                // add history to book
+                BookHistory bookHistory = new BookHistory("userid");
+                db.collection("books").document(book.getBarcode()).collection("histories")
+                        .add(bookHistory).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("db", Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
                     }
                 });
                 db.collection("books").document(book.getBarcode()).update("isFree",false).addOnFailureListener(new OnFailureListener() {
@@ -153,6 +165,8 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                         startActivity(intent);
                     }
                 });
+
+
 
             }
 
@@ -199,8 +213,6 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                     }
                 }
             });
-
-
 
     }
 

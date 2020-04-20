@@ -8,7 +8,6 @@
     <uses-permission android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".admin.AddBookActivity"></activity>
+        <activity android:name=".admin.ListBorrowedActivity"></activity>
+        <activity android:name=".admin.AddBookActivity" />
         <activity android:name=".ui.scanner.BorrowActivity" />
         <activity android:name=".ui.scanner.ReturnActivity" />
         <activity android:name=".ui.scanner.AddActivity" />

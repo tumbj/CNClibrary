@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.cnclibrary.admin.AddBookActivity;
+import com.example.cnclibrary.admin.ListBorrowedActivity;
 import com.example.cnclibrary.ui.scanner.BorrowActivity;
 import com.example.cnclibrary.ui.scanner.ReturnActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void addBookClk(android.view.View view) {
         Intent intent = new Intent(this, AddBookActivity.class);
+        startActivity(intent);
+    }
+
+    public void  onClkListBorrowed(android.view.View view) {
+        Intent intent = new Intent(this, ListBorrowedActivity.class);
         startActivity(intent);
     }
 }

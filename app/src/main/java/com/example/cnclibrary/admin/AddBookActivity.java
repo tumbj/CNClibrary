@@ -48,7 +48,7 @@ public class AddBookActivity extends AppCompatActivity {
 
         // category spinner start
         Spinner dropdown = findViewById(R.id.categorySpinner);
-        String[] items = new String[]{"Computer","Cartoon book","Science","Science","Novel","etc"};
+        String[] items = new String[]{"Computer","Cartoon book","Science","English","Novel","etc"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         dropdown.setAdapter(adapter);
         // category spinner end

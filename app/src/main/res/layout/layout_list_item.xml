@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/imageView"
+            android:text="Test"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textStartDate"
+            android:layout_width="203dp"
+            android:layout_height="29dp"
+            android:layout_below="@+id/textUserid"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/imageView"
+            android:text="Test"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textUserid"
+            android:layout_width="199dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textTitle"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@+id/imageView"
+            android:text="Test"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="107dp"
+            android:layout_height="113dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

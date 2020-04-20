@@ -81,4 +81,12 @@ public class Book {
     public void setImg(String img) {
         this.img = img;
     }
+
+    public boolean getIsFree() {
+        return isFree;
+    }
+
+    public void setIsFree(boolean isFree) {
+        this.isFree = isFree;
+    }
 }

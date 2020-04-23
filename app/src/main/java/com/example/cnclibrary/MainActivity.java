@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import com.example.cnclibrary.admin.AddBookActivity;
 import com.example.cnclibrary.admin.ListBorrowedActivity;
+import com.example.cnclibrary.data.model.Book;
+import com.example.cnclibrary.ui.home.BookAdapter;
+import com.example.cnclibrary.ui.home.HomeFragment;
 import com.example.cnclibrary.ui.scanner.BorrowActivity;
 import com.example.cnclibrary.ui.scanner.ReturnActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -14,6 +17,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
 
 
     }

@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cnclibrary.R;
@@ -85,6 +87,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.Holder>{
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    showDialog(mDataSet.get(position));
 //                    Intent intent = new Intent(view.getContext(),BookActivity.class);
 //                    intent.putExtra("book",mDataSet.get(position).getName());
 //                    intent.putExtra("Category",mDataSet.get(position).getCategory());
@@ -102,4 +105,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.Holder>{
             }
         }
     }
+    public void showDialog(Book book){
+        ShowDialogFragment showDialogFragment = new ShowDialogFragment(book);
+        showDialogFragment.show(((AppCompatActivity) view.getContext()).getSupportFragmentManager(),"Show");
+
+    }
 }
+

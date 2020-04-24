@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
                 if(task.isSuccessful()){
                     Log.i("tum"," work");
                     for(QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())){
-                        Log.d("tum", doc.getId() + " => " + doc.getData());
+//                        Log.d("tum", doc.getId() + " => " + doc.getData());
                         Book book = new Book(doc.getString("name"),doc.getString("barcode"),
                                 doc.getString("detail"),doc.getString("category"),
                                 Integer.parseInt(doc.get("count").toString()),doc.getString("img"));

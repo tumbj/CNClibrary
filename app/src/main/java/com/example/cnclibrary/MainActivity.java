@@ -12,6 +12,7 @@ import com.example.cnclibrary.data.model.Book;
 import com.example.cnclibrary.data.model.User;
 import com.example.cnclibrary.ui.home.BookAdapter;
 import com.example.cnclibrary.ui.home.HomeFragment;
+import com.example.cnclibrary.ui.login.LoginActivity;
 import com.example.cnclibrary.ui.scanner.BorrowActivity;
 import com.example.cnclibrary.ui.scanner.ReturnActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-    GoogleSignInClient mGoogleSignInClient ;
-    int GOOGLE_SIGN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
 //// google sign on
         mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
     }
 
     public void borrowClk(android.view.View view) {
@@ -98,20 +90,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ListBorrowedActivity.class);
         startActivity(intent);
     }
-    public void onClkSignIn(android.view.View view){
-        Log.i("tum","sign in was clicked1");
 
-        signIn();
-    }
-    public void onClkSignOut(android.view.View view){
-        Log.i("tum","sign out was clicked1");
-        mAuth.signOut();
-    }
-    private void signIn() {
-        Log.i("tum","sign in was clicked2");
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent,GOOGLE_SIGN);
-    }
     @Override
     public void onStart() {
         super.onStart();
@@ -121,69 +100,10 @@ public class MainActivity extends AppCompatActivity {
             Log.i("tum","current user :"+currentUser.getDisplayName());
             //        updateUI(currentUser);
         }else {
-            signIn();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == GOOGLE_SIGN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.i("tum","account "+account.getDisplayName());
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("tum", "Google sign in failed", e);
-                e.printStackTrace();
-                // ...
-            }
-        }
-    }
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("tum", "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("tum", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-                            storeUserToDB(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("tum", "signInWithCredential:failure", task.getException());
-//                            Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-//                            updateUI(null);
-                        }
-                    }
-                });
-    }
-
-    private void storeUserToDB(FirebaseUser user) {
-        Log.i("auth","display name :"+user.getDisplayName()+", email : "+user.getEmail()
-        + ",uid : "+user.getUid());
-        String uid = user.getUid();
-        String displayName = user.getDisplayName();
-        String email = user.getEmail();
-        User newUser = new User(uid,email,displayName);
-        db.collection("users").document(uid).set(newUser).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("db","cannot create user to db");
-            }
-        });
-
-
-    }
 
 }

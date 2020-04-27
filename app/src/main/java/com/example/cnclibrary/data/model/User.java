@@ -1,22 +1,22 @@
 package com.example.cnclibrary.data.model;
 
 public class User {
-    private String uid;
     private String email;
     private String displayName;
+    private String role;
 
-    public User(String uid, String email, String displayName) {
-        this.uid = uid;
+    public User(String email, String displayName,String role) {
         this.email = email;
         this.displayName = displayName;
+        this.role = role;
     }
 
-    public String getUid() {
-        return uid;
+    public String getRole() {
+        return role;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {

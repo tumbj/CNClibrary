@@ -161,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
         String uid = user.getUid();
         String displayName = user.getDisplayName();
         String email = user.getEmail();
-        User newUser = new User(uid,email,displayName);
+        User newUser = new User(email,displayName,"user");
         db.collection("users").document(uid).set(newUser).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

@@ -64,7 +64,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    Log.i("tum"," work");
                     for(QueryDocumentSnapshot doc : Objects.requireNonNull(task.getResult())){
 //                        Log.d("tum", doc.getId() + " => " + doc.getData());
                         Book book = new Book(doc.getString("name"),doc.getString("barcode"),
@@ -75,7 +74,7 @@ public class HomeFragment extends Fragment {
                     adapter = new BookAdapter(books);
                     recyclerView.setAdapter(adapter);
                 }else{
-                    Log.i("tum","not work");
+                    Log.i("tum","not found book from DB");
                 }
             }
         });

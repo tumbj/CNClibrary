@@ -74,7 +74,6 @@ public class ShowDialogFragment extends AppCompatDialogFragment {
 //                    }
 //                });
 
-
         textTitle = view.findViewById(R.id.textTitle);
         textCategory = view.findViewById(R.id.textCategory);
         textDetail = view.findViewById(R.id.textDetail);

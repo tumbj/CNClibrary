@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String ROLE = "user"; // default is user
+    //have user, admin
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
@@ -97,7 +100,19 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         if(mAuth.getCurrentUser()!=null){
             FirebaseUser currentUser = mAuth.getCurrentUser();
-            Log.i("tum","current user :"+currentUser.getDisplayName());
+            Log.i("tum","main ;current user :"+currentUser.getDisplayName());
+            DocumentReference docRef = db.collection("users").document(currentUser.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        if(documentSnapshot.exists()){
+                            ROLE = (String) documentSnapshot.get("role");
+                        }
+                    }
+                }
+            });
             //        updateUI(currentUser);
         }else {
             Intent intent = new Intent(this, LoginActivity.class);

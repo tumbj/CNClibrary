@@ -43,6 +43,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
@@ -53,14 +55,11 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient ;
     int GOOGLE_SIGN = 123;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Log.i("tum","in login acti");
         loadingProgressBar = findViewById(R.id.loading);
-
         loginBtn = findViewById(R.id.sign_in_button);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,13 +160,26 @@ public class LoginActivity extends AppCompatActivity {
         String uid = user.getUid();
         String displayName = user.getDisplayName();
         String email = user.getEmail();
-        User newUser = new User(email,displayName,"user");
-        db.collection("users").document(uid).set(newUser).addOnFailureListener(new OnFailureListener() {
+        User newUser   = new User(email,displayName,"user");
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.i("db","cannot create user to db");
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if(!documentSnapshot.exists()){
+                        Log.i("db","store user to DB");
+                        docRef.set(newUser).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("db","cannot create user to db");
+                            }
+                        });
+                    }
+                }
             }
         });
+
     }
     private void updateUiWithUser(String user) {
         String welcome = getString(R.string.welcome) + user;

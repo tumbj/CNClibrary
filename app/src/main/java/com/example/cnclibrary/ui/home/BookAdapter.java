@@ -1,7 +1,5 @@
 package com.example.cnclibrary.ui.home;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -15,14 +13,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cnclibrary.R;
-import com.example.cnclibrary.admin.data.model.ListBorrowed;
+import com.example.cnclibrary.admin.ShowAdminDialogFragment;
 import com.example.cnclibrary.data.model.Book;
 
 import java.util.ArrayList;
+
+import static com.example.cnclibrary.MainActivity.ROLE;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.Holder>{
     private ArrayList<Book> mDataSet;
@@ -37,6 +36,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.Holder>{
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_item_book,parent,false);
         Holder holder = new Holder(view);
         return holder;
@@ -87,13 +87,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.Holder>{
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDialog(mDataSet.get(position));
-//                    Intent intent = new Intent(view.getContext(),BookActivity.class);
-//                    intent.putExtra("book",mDataSet.get(position).getName());
-//                    intent.putExtra("Category",mDataSet.get(position).getCategory());
-//                    intent.putExtra("Description",mDataSet.get(position).getDetail());
-//                    intent.putExtra("Thumbnail",mDataSet.get(position).getImg());
-//                    view.getContext().startActivity(intent);
+                    Log.i("role","role is"+ROLE);
+                    if(ROLE.equals("user")){
+                        showDialog(mDataSet.get(position));
+                    }else{
+                        showAdminDialog(mDataSet.get(position));
+                    }
                 }
             });
         }
@@ -108,7 +107,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.Holder>{
     public void showDialog(Book book){
         ShowDialogFragment showDialogFragment = new ShowDialogFragment(book);
         showDialogFragment.show(((AppCompatActivity) view.getContext()).getSupportFragmentManager(),"Show");
-
     }
+    public void showAdminDialog(Book book){
+        ShowAdminDialogFragment showAdminDialogFragment = new ShowAdminDialogFragment(book);
+        showAdminDialogFragment.show(((AppCompatActivity) view.getContext()).getSupportFragmentManager(),"Show");
+    }
+
 }
 

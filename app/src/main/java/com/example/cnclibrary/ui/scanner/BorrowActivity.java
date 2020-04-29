@@ -15,11 +15,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.cnclibrary.MainActivity;
-import com.example.cnclibrary.R;
-import com.example.cnclibrary.admin.AddBookActivity;
 import com.example.cnclibrary.data.model.Book;
 import com.example.cnclibrary.data.model.BookHistory;
-import com.example.cnclibrary.data.model.History;
 import com.example.cnclibrary.data.model.UserBookHistory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,16 +25,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 import com.google.zxing.Result;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -164,6 +156,7 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                 }).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        Toast.makeText(BorrowActivity.this,"Borrow success",Toast.LENGTH_LONG).show();
                         mScannerView.resumeCameraPreview(BorrowActivity.this);
                         Intent intent = new Intent(BorrowActivity.this, MainActivity.class);
                         startActivity(intent);

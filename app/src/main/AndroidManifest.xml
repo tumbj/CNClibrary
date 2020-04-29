@@ -20,7 +20,10 @@
             android:label="EDIT BOOK">
         </activity>
         <activity android:name=".admin.ListBorrowedActivity" />
-        <activity android:name=".admin.AddBookActivity" />
+        <activity android:name=".admin.AddBookActivity"
+            android:label="Add book">
+
+        </activity>
         <activity android:name=".ui.scanner.BorrowActivity" />
         <activity android:name=".ui.scanner.ReturnActivity" />
         <activity android:name=".ui.scanner.AddActivity" />

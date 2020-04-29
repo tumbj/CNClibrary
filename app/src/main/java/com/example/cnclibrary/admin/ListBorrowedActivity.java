@@ -62,10 +62,18 @@ public class ListBorrowedActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     for(QueryDocumentSnapshot document : task.getResult()){
                                         Log.d("tum", document.getId() + " => " + document.getData());
-                                        listBorrowed.setUserid((String) document.get("user_id"));
-                                        listBorrowed.setStart_date((String) document.get("start_date"));
-                                        items.add(listBorrowed);
-                                        adapter.notifyDataSetChanged();
+                                        String userid = (String) document.get("user_id");
+                                        db.collection("users")
+                                                .document(userid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        String email = (String) task.getResult().get("email");
+                                                        listBorrowed.setUserid(email);
+                                                        listBorrowed.setStart_date((String) document.get("start_date"));
+                                                        items.add(listBorrowed);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                });
                                     }
                                 }
                             }

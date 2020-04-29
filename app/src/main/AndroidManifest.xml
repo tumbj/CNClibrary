@@ -19,7 +19,9 @@
             android:name=".admin.EditBookActivity"
             android:label="EDIT BOOK">
         </activity>
-        <activity android:name=".admin.ListBorrowedActivity" />
+        <activity android:name=".admin.ListBorrowedActivity"
+            android:label="List Borrowed">
+        </activity>
         <activity android:name=".admin.AddBookActivity"
             android:label="Add book">
 

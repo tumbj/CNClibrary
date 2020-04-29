@@ -20,10 +20,12 @@ import com.example.cnclibrary.admin.AddBookActivity;
 import com.example.cnclibrary.data.model.Book;
 import com.example.cnclibrary.data.model.BookHistory;
 import com.example.cnclibrary.data.model.History;
+import com.example.cnclibrary.data.model.UserBookHistory;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -47,6 +49,7 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView mScannerView;
     FirebaseFirestore db;
+    FirebaseAuth mAuth;
 
     @Override
     public void onCreate(Bundle state) {
@@ -54,6 +57,7 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(checkPermission()){
                 Toast.makeText(BorrowActivity.this,"Permission is granted",Toast.LENGTH_LONG).show();
@@ -131,19 +135,19 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Log.i("vac","ok was click");
-
-//                History history = new History(book.getBarcode());
-//                // add history to bag of user
-//                db.collection("bags").document("userid")
-//                        .update("books", FieldValue.arrayUnion(history)).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                });
+                String uid = mAuth.getUid();
                 // add history to book
-                BookHistory bookHistory = new BookHistory("userid");
+                UserBookHistory userBookHistory = new UserBookHistory(book.getBarcode());
+                assert uid != null;
+                db.collection("users").document(uid).collection("bags")
+                        .add(userBookHistory).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
+                BookHistory bookHistory = new BookHistory(mAuth.getUid());
                 db.collection("books").document(book.getBarcode()).collection("histories")
                         .add(bookHistory).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -165,9 +169,6 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                         startActivity(intent);
                     }
                 });
-
-
-
             }
 
         });
@@ -206,7 +207,9 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                                 mScannerView.resumeCameraPreview(BorrowActivity.this);
                             }
                         } else {
+                            Toast.makeText(getApplicationContext(),"Can't find this book in DB",Toast.LENGTH_LONG).show();
                             Log.d("vac", "No such document");
+                            mScannerView.resumeCameraPreview(BorrowActivity.this);
                         }
                     } else {
                         Log.d("vac", "get failed with ", task.getException());

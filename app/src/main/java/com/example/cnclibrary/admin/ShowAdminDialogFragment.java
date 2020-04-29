@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.example.cnclibrary.MainActivity;
 import com.example.cnclibrary.R;
 import com.example.cnclibrary.data.model.Book;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -55,29 +56,6 @@ public class ShowAdminDialogFragment extends AppCompatDialogFragment {
                 ShowAdminDialogFragment.this.getDialog().cancel();
             }
         });
-//                .setTitle("Edit item")
-//                .setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        String name = nameEditText.getText().toString();
-//                        double price = Double.parseDouble(priceEditText.getText().toString());
-//                        int count = Integer.parseInt(countEditText.getText().toString());
-////                        Log.d("test","name: "+name+", price: "+price+", count: "+count+", key: "+itemWithKey.getKey());
-////                        db.updateItem(itemWithKey.getKey(),new Item(name, count, price));
-//
-//                    }
-//                });
-//                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        EditDialogFragment.this.getDialog().cancel();
-//                    }
-//                }).setNeutralButton("DELETE", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        Log.d("delete","delete was clicked");
-//                        db.deleteItem(itemWithKey.getKey());
-//                    }
-//                });
 
         textTitle = view.findViewById(R.id.textTitle);
         textCategory = view.findViewById(R.id.textCategory);
@@ -113,7 +91,7 @@ public class ShowAdminDialogFragment extends AppCompatDialogFragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openConfirmDialog(barcode);
             }
         });
         return builder.create();
@@ -122,4 +100,10 @@ public class ShowAdminDialogFragment extends AppCompatDialogFragment {
         byte[] imageBytes = Base64.decode(encodeImg, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
     }
+    public void openConfirmDialog(String barcode){
+        ConfirmDialogFragment confirmDialogFragment = new ConfirmDialogFragment(barcode);
+        confirmDialogFragment.show(getActivity().getSupportFragmentManager(),"DELETE");
+
+    }
 }
+

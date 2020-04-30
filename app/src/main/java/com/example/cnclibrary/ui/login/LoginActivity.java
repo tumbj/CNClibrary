@@ -34,6 +34,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,7 +51,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class LoginActivity extends AppCompatActivity {
 
     ProgressBar loadingProgressBar;
-    Button loginBtn;
+    SignInButton loginBtn;
     FirebaseFirestore db;
     FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient ;
@@ -60,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loadingProgressBar = findViewById(R.id.loading);
-        loginBtn = findViewById(R.id.sign_in_button);
+        loginBtn = (SignInButton)findViewById(R.id.sign_in_button);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

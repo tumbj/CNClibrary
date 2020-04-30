@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class MyBagActivity extends AppCompatActivity {
     ArrayList<BookInBag> books;
     ProgressBar progressBar;
     TextView alertView;
+    ImageView outOfBook;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,8 @@ public class MyBagActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         books = new ArrayList<>();
         progressBar = findViewById(R.id.my_bag_progress_bar);
+        outOfBook = findViewById(R.id.out_of_book_view);
+        outOfBook.setVisibility(View.GONE);
         alertView = findViewById(R.id.alert_view);
         alertView.setVisibility(View.GONE);
         alertView.setText("Not have book in bag!!!");
@@ -77,7 +81,9 @@ public class MyBagActivity extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
+                                    outOfBook.setVisibility(View.GONE);
                                     progressBar.setVisibility(View.GONE);
+                                    e.printStackTrace();
                                 }
                             });
                         }else {
@@ -98,6 +104,7 @@ public class MyBagActivity extends AppCompatActivity {
             public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
                 if(task.getResult().isEmpty()){
                     alertView.setVisibility(View.VISIBLE);
+                    outOfBook.setVisibility(View.VISIBLE);
                 }
                 progressBar.setVisibility(View.GONE);
                 return null;

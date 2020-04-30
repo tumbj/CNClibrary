@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.cnclibrary.R;
 import com.example.cnclibrary.admin.data.model.ListBorrowed;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -33,6 +38,9 @@ import java.util.Map;
 
 public class ListBorrowedActivity extends AppCompatActivity {
     FirebaseFirestore db;
+    ProgressBar progressBar;
+    TextView alertView;
+    ImageView outOfBook;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +52,15 @@ public class ListBorrowedActivity extends AppCompatActivity {
         final ArrayList<ListBorrowed> items = new ArrayList<>();
         final ListBorrowedAdapter adapter = new ListBorrowedAdapter(items);
         db = FirebaseFirestore.getInstance();
+        progressBar = findViewById(R.id.list_borrowed_progress_bar);
+        outOfBook = findViewById(R.id.list_borrow_out_of_book_view);
+        alertView = findViewById(R.id.list_borrow_alert_view);
+
+        outOfBook.setVisibility(View.GONE);
+        alertView.setVisibility(View.GONE);
+        alertView.setText("Not have book in bag!!!");
+
+        progressBar.setVisibility(View.VISIBLE);
         db.collection("books").whereEqualTo("isFree",false).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -72,6 +89,7 @@ public class ListBorrowedActivity extends AppCompatActivity {
                                                         listBorrowed.setStart_date((String) document.get("start_date"));
                                                         items.add(listBorrowed);
                                                         adapter.notifyDataSetChanged();
+                                                        progressBar.setVisibility(View.GONE);
                                                     }
                                                 });
                                     }
@@ -80,6 +98,8 @@ public class ListBorrowedActivity extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                outOfBook.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.GONE);
                                 e.printStackTrace();
                             }
                         });
@@ -91,7 +111,19 @@ public class ListBorrowedActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                outOfBook.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 e.printStackTrace();
+            }
+        }).continueWith(new Continuation<QuerySnapshot, Object>() {
+            @Override
+            public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                if(task.getResult().isEmpty()){
+                    alertView.setVisibility(View.VISIBLE);
+                    outOfBook.setVisibility(View.VISIBLE);
+                }
+//                progressBar.setVisibility(View.GONE);
+                return null;
             }
         });
 

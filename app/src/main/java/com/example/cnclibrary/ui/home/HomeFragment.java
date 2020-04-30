@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -17,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cnclibrary.R;
 import com.example.cnclibrary.data.model.Book;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,6 +43,11 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db;
     BookAdapter adapter ;
     RecyclerView recyclerView;
+
+    ProgressBar progressBar;
+    TextView alertView;
+    ImageView outOfBook;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -52,6 +61,16 @@ public class HomeFragment extends Fragment {
             }
         });
         books = new ArrayList<>();
+        progressBar = root.findViewById(R.id.main_progress_bar);
+        outOfBook = root.findViewById(R.id.main_out_of_book_view);
+        alertView = root.findViewById(R.id.main_alert_view);
+
+        outOfBook.setVisibility(View.GONE);
+        alertView.setVisibility(View.GONE);
+        alertView.setText("Not have book!!!");
+
+        progressBar.setVisibility(View.VISIBLE);
+
         setUpRecyclerView(root);
         setUpFirebase();
         loadDataFromFirebase();
@@ -60,6 +79,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadDataFromFirebase() {
+        progressBar.setVisibility(View.VISIBLE);
         db.collection("books").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -76,6 +96,23 @@ public class HomeFragment extends Fragment {
                 }else{
                     Log.i("tum","not found book from DB");
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                outOfBook.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                e.printStackTrace();
+            }
+        }).continueWith(new Continuation<QuerySnapshot, Object>() {
+            @Override
+            public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                if(task.getResult().isEmpty()){
+                    alertView.setVisibility(View.VISIBLE);
+                    outOfBook.setVisibility(View.VISIBLE);
+                }
+                progressBar.setVisibility(View.GONE);
+                return null;
             }
         });
 

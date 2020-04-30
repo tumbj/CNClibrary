@@ -18,6 +18,7 @@ import com.example.cnclibrary.MainActivity;
 import com.example.cnclibrary.data.model.Book;
 import com.example.cnclibrary.data.model.BookHistory;
 import com.example.cnclibrary.data.model.UserBookHistory;
+import com.example.cnclibrary.ui.dashboard.MyBagActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -158,7 +159,7 @@ public class BorrowActivity extends Activity implements ZXingScannerView.ResultH
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(BorrowActivity.this,"Borrow success",Toast.LENGTH_LONG).show();
                         mScannerView.resumeCameraPreview(BorrowActivity.this);
-                        Intent intent = new Intent(BorrowActivity.this, MainActivity.class);
+                        Intent intent = new Intent(BorrowActivity.this, MyBagActivity.class);
                         startActivity(intent);
                     }
                 });

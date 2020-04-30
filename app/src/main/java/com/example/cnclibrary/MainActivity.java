@@ -10,6 +10,7 @@ import com.example.cnclibrary.admin.AddBookActivity;
 import com.example.cnclibrary.admin.ListBorrowedActivity;
 import com.example.cnclibrary.data.model.Book;
 import com.example.cnclibrary.data.model.User;
+import com.example.cnclibrary.ui.dashboard.MyBagActivity;
 import com.example.cnclibrary.ui.home.BookAdapter;
 import com.example.cnclibrary.ui.home.HomeFragment;
 import com.example.cnclibrary.ui.login.LoginActivity;
@@ -94,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ListBorrowedActivity.class);
         startActivity(intent);
     }
-
+    public void  myBagClk(android.view.View view) {
+        Intent intent = new Intent(this, MyBagActivity.class);
+        startActivity(intent);
+    }
     @Override
     public void onStart() {
         super.onStart();

@@ -32,7 +32,7 @@ public class DashboardFragment extends Fragment {
     FirebaseFirestore db;
     Button addBtn ;
     Button listBtn ;
-
+    Button returnBtn;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
@@ -48,11 +48,14 @@ public class DashboardFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         addBtn = root.findViewById(R.id.addBookBtn);
         listBtn = root.findViewById(R.id.listBorrowedBtn);
+        returnBtn = root.findViewById(R.id.returnBtn);
         addBtn.setVisibility(View.VISIBLE);
         listBtn.setVisibility(View.VISIBLE);
+        returnBtn.setVisibility(View.VISIBLE);
         if(ROLE.equals("user")){
              addBtn.setVisibility(View.INVISIBLE);
              listBtn.setVisibility(View.INVISIBLE);
+             returnBtn.setVisibility(View.INVISIBLE);
         }
 
         return root;

@@ -15,6 +15,11 @@ public class UserBookHistory {
         this.end_date = null;
     }
 
+    public UserBookHistory(String barcode,String start_date) {
+        this.barcode = barcode;
+        this.start_date =  start_date;
+        this.end_date = null;
+    }
     public String getBarcode() {
         return barcode;
     }

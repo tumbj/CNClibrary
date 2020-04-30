@@ -15,17 +15,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".admin.EditBookActivity"
-            android:label="EDIT BOOK">
-        </activity>
-        <activity android:name=".admin.ListBorrowedActivity"
-            android:label="List Borrowed">
-        </activity>
-        <activity android:name=".admin.AddBookActivity"
-            android:label="Add book">
+        <activity android:name=".ui.dashboard.MyBagActivity"
+            android:label="My Bag">
 
         </activity>
+        <activity
+            android:name=".admin.EditBookActivity"
+            android:label="EDIT BOOK"></activity>
+        <activity
+            android:name=".admin.ListBorrowedActivity"
+            android:label="List Borrowed"></activity>
+        <activity
+            android:name=".admin.AddBookActivity"
+            android:label="Add book"></activity>
         <activity android:name=".ui.scanner.BorrowActivity" />
         <activity android:name=".ui.scanner.ReturnActivity" />
         <activity android:name=".ui.scanner.AddActivity" />

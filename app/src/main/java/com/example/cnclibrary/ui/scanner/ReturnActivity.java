@@ -133,37 +133,50 @@ public class ReturnActivity extends Activity implements ZXingScannerView.ResultH
                 Log.i("vac","ok was click");
 //                History history = new History(book.getBarcode());
                 // get userid from history in book ; update end_date
-                String uid = mAuth.getUid();
-                UserBookHistory userBookHistory = new UserBookHistory(barcode);
-                DocumentReference userRef = db.collection("users").document(uid);
-                userRef.collection("bags").whereEqualTo("barcode",barcode)
-                        .whereEqualTo("end_date",null).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String start_date = (String) document.getData().get("start_date");
-                                userBookHistory.setStart_date(start_date);
-                                userBookHistory.setEnd_date(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
-                                String key = document.getId();
-                                userRef.collection("bags").document(key).set(userBookHistory)
-                                        .addOnFailureListener(new OnFailureListener() {
+                db.collection("books").document(barcode).collection("histories").whereEqualTo("end_date",null).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.i("tum", "user id in book+ "+document.get("user_id"));
+                                        String uid = (String)document.get("user_id");
+                                        UserBookHistory userBookHistory = new UserBookHistory(barcode);
+                                        DocumentReference userRef = db.collection("users").document(uid);
+                                        userRef.collection("bags").whereEqualTo("barcode",barcode)
+                                                .whereEqualTo("end_date",null).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        String start_date = (String) document.getData().get("start_date");
+                                                        Log.i("indeep",document.getData().toString());
+                                                        userBookHistory.setStart_date(start_date);
+                                                        userBookHistory.setEnd_date(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
+                                                        String key = document.getId();
+                                                        Log.i("tum",userBookHistory.getBarcode()+"key "+key);
+                                                        userRef.collection("bags").document(key).set(userBookHistory)
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                });
+                                                    }
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 e.printStackTrace();
                                             }
                                         });
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
-//                db.collection("bags").document("userid")
-//                        .update("books", FieldValue.arrayUnion(history)).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.e("db", Arrays.toString(e.getStackTrace()));
-//                    }
-//                });
+                        });
+
+
                 final DocumentReference docRef = db.collection("books").document(barcode);
                 final BookHistory bookHistory = new BookHistory();
                 // get data

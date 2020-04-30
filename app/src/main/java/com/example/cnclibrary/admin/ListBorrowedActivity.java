@@ -122,7 +122,7 @@ public class ListBorrowedActivity extends AppCompatActivity {
                     alertView.setVisibility(View.VISIBLE);
                     outOfBook.setVisibility(View.VISIBLE);
                 }
-//                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 return null;
             }
         });

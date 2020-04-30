@@ -62,7 +62,7 @@ public class AddBookActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
         String barcodeData = intent.getStringExtra("barcodeData");
-        TextView barcodeText = findViewById(R.id.barcodeText);
+        barcodeText = findViewById(R.id.barcodeText);
         barcodeText.setText(barcodeData);
 
         loadingProgressBar = findViewById(R.id.addBookLoading);
